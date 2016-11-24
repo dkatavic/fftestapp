@@ -1,9 +1,10 @@
 version: '2'
 services:
   node:
-    image: dkatavic/sails-sqlite3
+    image: dkatavic/sails
     ports:
       - 1337:1337
+      - 5858:5858
     command: tail -f /dev/null # loop infinitly
     working_dir: /app
     volumes:
