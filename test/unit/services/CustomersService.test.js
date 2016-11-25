@@ -39,13 +39,13 @@ describe('CustomersService', function() {
       return Promise.all(promises);
     });
 
-    it('Should list all customers', (done) => {
+    it('Should list all customers', () => {
 
-      return Customers.list()
+      return CustomersService.list()
       .then((_customers) => {
         expect(_customers.length).to.equal(customers.length);
       });
-      
+
     });
 
     tests.forEach((test) => {
