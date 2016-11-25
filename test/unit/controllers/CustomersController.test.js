@@ -72,7 +72,41 @@ describe('CustomersController', function() {
 
   describe('DELETE /customer/:id', function() {
 
-    it('Should delete customer');
+    var customerToDelete;
+
+    before((done) => {
+      var birthDayFormat = sails.config.app_data.customersBirthdayFormat;
+      var birthDay = moment(faker.date.past()).format(birthDayFormat);
+
+      customerToDelete = {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        birth_date: birthDay
+      };
+      Customers.create(customerToDelete)
+      .then((_cust) => {
+        customerToDelete.id = _cust.id;
+        done();
+      }).catch(done);
+    });
+
+    it('Should delete customer', (done) => {
+
+      request(sails.hooks.http.app)
+        .delete(`/customer/${customerToDelete.id}`)
+        .expect(200)
+        .end(function(err, data) {
+          if (err) {
+            return done(err);
+          }
+          expect(data.body.id).to.equal(customerToDelete.id);
+          expect(data.body.first_name).to.equal(customerToDelete.first_name);
+          expect(data.body.last_name).to.equal(customerToDelete.last_name);
+          expect(data.body.birth_date).to.equal(customerToDelete.birth_date);
+          done();
+        });
+
+    });
 
   });
 
