@@ -87,6 +87,29 @@ module.exports = {
     });
   },
 
+  get: function(req, res) {
+    var params = {
+      id: req.params.id,
+    };
+
+    if (!params.id) {
+      return res.status(400).json({
+        message: 'Missing id parameter'
+      });
+    }
+    
+    CustomersService.get(params)
+    .then((customer) => {
+      return res.status(200).json(customer);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(err.statusCode || 400).json({
+        message: err.message
+      });
+    });
+  },
+
 
   /**
    * `CustomersController.list()`
