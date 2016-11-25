@@ -50,6 +50,10 @@ module.exports = {
       throw new Error("Missing params.id");
     }
     return Customers.destroy(params.id);
+  },
+
+  list: (params) => {
+    return Customers.find();
   }
 
 };
