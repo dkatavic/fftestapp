@@ -43,6 +43,13 @@ module.exports = {
     }
 
     return Customers.update({ id: params.id }, params.newValues);
+  },
+
+  delete: (params) => {
+    if (!params.id) {
+      throw new Error("Missing params.id");
+    }
+    return Customers.destroy(params.id);
   }
 
 };
