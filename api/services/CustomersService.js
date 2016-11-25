@@ -90,7 +90,8 @@ module.exports = {
       var reqOpts = {
         url: sails.config.app_data.jokeUrl,
         qs: {
-          firstName: customer.first_name
+          firstName: customer.first_name,
+          lastName: customer.last_name
         }
       };
 
