@@ -207,11 +207,14 @@ describe('CustomersService', function() {
 
       CustomersService.get({ id: customerToCreate.id })
       .then((_customer) => {
-        var nameRegExp;
+        var nameRegExpFirstName;
+        var nameRegExpLastName;
         expect(_customer.id).to.equal(customerToCreate.id);
         expect(_customer.joke).to.be.a('String');
-        nameRegExp = new RegExp(_customer.first_name, "i");
-        expect(_customer.joke).to.match(nameRegExp);
+        nameRegExpFirstName = new RegExp(_customer.first_name, "i");
+        expect(_customer.joke).to.match(nameRegExpFirstName);
+        nameRegExpLastName = new RegExp(_customer.last_name, "i");
+        expect(_customer.joke).to.match(nameRegExpLastName);
         done();
       }).catch(done);
 
