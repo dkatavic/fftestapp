@@ -17,7 +17,7 @@ describe('CustomersService', function() {
     },{
       sortBy: 'last_name'
     },{
-      sortBy: 'created_at'
+      sortBy: 'birth_date'
     }];
     var customers = [];
 
@@ -49,7 +49,23 @@ describe('CustomersService', function() {
     });
 
     tests.forEach((test) => {
-      it(`Should list all customers sorted by ${test.sortBy}`);
+
+      it(`Should list all customers sorted by ${test.sortBy}`, () => {
+
+        var sortKey = test.sortBy;
+
+        return CustomersService.list({ sortBy: sortKey })
+        .then((_customers) => {
+          let prevValue = "";
+          expect(_customers.length).to.equal(customers.length);
+          _customers.forEach((cust) => {
+            expect(cust[sortKey]).to.be.at.least(prevValue);
+            prevValue = cust[sortKey];
+          });
+        });
+
+      });
+
     });
 
   });

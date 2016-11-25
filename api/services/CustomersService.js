@@ -1,6 +1,7 @@
 // CustomersService.js
 
 var moment = require('moment');
+var _ = require('lodash');
 
 module.exports = {
 
@@ -53,7 +54,13 @@ module.exports = {
   },
 
   list: (params) => {
-    return Customers.find();
+    return Customers.find()
+    .then(customers => {
+      if (!params || !params.sortBy) {
+        return customers;
+      }
+      return _.sortBy(customers, params.sortBy);
+    })
   }
 
 };
