@@ -41,4 +41,10 @@ describe('CustomersController', function() {
 
   });
 
+  describe('GET /customer/:id', function() {
+
+    it('Should get customer with a joke');
+
+  });
+
 });

@@ -183,4 +183,10 @@ describe('CustomersService', function() {
 
   });
 
+  describe('get', function() {
+
+    it('Should get customer with a joke');
+
+  });
+
 });
