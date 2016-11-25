@@ -87,6 +87,13 @@ module.exports = {
     .then((_customer) => {
       customer = _customer;
 
+      if (!customer) {
+        return Promise.reject({
+          statusCode: 404,
+          message: `Can't find customer with id ${params.id}`
+        })
+      }
+
       var reqOpts = {
         url: sails.config.app_data.jokeUrl,
         qs: {
