@@ -19,8 +19,34 @@ describe('CustomersService', function() {
     },{
       sortBy: 'created_at'
     }];
+    var customers = [];
 
-    it('Should list all customers');
+    before(() => {
+      let birthDayFormat = sails.config.app_data.customersBirthdayFormat;
+      let promises;
+
+      for (let i = 0; i < 10; i++) {
+        let birthDay = moment(faker.date.past()).format(birthDayFormat);
+        customers.push({
+          first_name: faker.name.firstName(),
+          last_name: faker.name.lastName(),
+          birth_date: birthDay
+        });
+      }
+      
+      promises = customers.map(el => Customers.create(el));
+
+      return Promise.all(promises);
+    });
+
+    it('Should list all customers', (done) => {
+
+      return Customers.list()
+      .then((_customers) => {
+        expect(_customers.length).to.equal(customers.length);
+      });
+      
+    });
 
     tests.forEach((test) => {
       it(`Should list all customers sorted by ${test.sortBy}`);
@@ -126,7 +152,7 @@ describe('CustomersService', function() {
       }).catch(done);
     });
 
-    it('Should delete customer', function() {
+    it('Should delete customer', function(done) {
 
       CustomersService.delete({
         id: customerToDelete.id
