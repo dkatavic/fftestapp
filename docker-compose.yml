@@ -5,7 +5,7 @@ services:
     ports:
       - 1337:1337
       - 5858:5858
-    command: npm test
+    command: tail -f /dev/null # loop infinitly
     working_dir: /app
     volumes:
       - .:/app
