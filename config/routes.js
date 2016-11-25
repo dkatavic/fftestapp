@@ -49,6 +49,7 @@ module.exports.routes = {
   'POST /customer': 'CustomersController.create',
   'PUT /customer/:id': 'CustomersController.edit',
   'DELETE /customer/:id': 'CustomersController.delete',
-  'GET /customer/:id': 'CustomersController.get'
+  'GET /customer/:id': 'CustomersController.get',
+  'GET /customers': 'CustomersController.list'
 
 };

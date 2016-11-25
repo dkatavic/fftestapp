@@ -49,7 +49,7 @@ describe('CustomersController', function() {
           if (err) {
             return done(err);
           }
-          expect(data.body.customers.length).to.equal(customers.length);
+          expect(data.body.length).to.equal(customers.length);
           done();
         });
 
@@ -60,13 +60,13 @@ describe('CustomersController', function() {
 
         request(sails.hooks.http.app)
         .get(`/customers`)
-        .query({ sortBy: test })
+        .query({ sortBy: test.sortBy })
         .expect(200)
         .end(function(err, data) {
           if (err) {
             return done(err);
           }
-          expect(data.body.customers.length).to.equal(customers.length);
+          expect(data.body.length).to.equal(customers.length);
           done();
         });
 
