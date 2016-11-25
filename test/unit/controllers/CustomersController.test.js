@@ -94,7 +94,7 @@ describe('CustomersController', function() {
 
       request(sails.hooks.http.app)
         .delete(`/customer/${customerToDelete.id}`)
-        .expect(200)
+        .expect(204)
         .end(function(err, data) {
           if (err) {
             return done(err);

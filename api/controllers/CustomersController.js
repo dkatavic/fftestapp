@@ -63,14 +63,27 @@ module.exports = {
       });
     });
   },
-
-
-  /**
-   * `CustomersController.delete()`
-   */
+  
   delete: function (req, res) {
-    return res.json({
-      todo: 'delete() is not implemented yet!'
+    var params = {
+      id: req.params.id,
+    };
+
+    if (!params.id) {
+      return res.status(400).json({
+        message: 'Missing id parameter'
+      });
+    }
+
+    CustomersService.delete(params)
+    .then((customer) => {
+      return res.json(customer);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(err.statusCode || 400).json({
+        message: err.message
+      });
     });
   },
 
