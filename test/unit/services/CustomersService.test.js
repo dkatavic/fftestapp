@@ -205,7 +205,7 @@ describe('CustomersService', function() {
 
     it('Should get customer with a joke', (done) => {
 
-      Customers.get({ id: customerToCreate.id })
+      CustomersService.get({ id: customerToCreate.id })
       .then((_customer) => {
         var nameRegExp;
         expect(_customer.id).to.equal(customerToCreate.id);

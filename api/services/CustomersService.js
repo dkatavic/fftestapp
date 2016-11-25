@@ -2,6 +2,7 @@
 
 var moment = require('moment');
 var _ = require('lodash');
+var request = require('request-promise');
 
 module.exports = {
 
@@ -60,6 +61,35 @@ module.exports = {
         return customers;
       }
       return _.sortBy(customers, params.sortBy);
+    })
+  },
+
+  get: (params) => {
+    var customer;
+
+    if (!params.id) {
+      throw new Error("Missing params.id");
+    }
+
+    return Customers.findOne(params.id)
+    .then((_customer) => {
+      customer = _customer;
+
+      var reqOpts = {
+        url: sails.config.app_data.jokeUrl,
+        qs: {
+          firstName: customer.first_name
+        }
+      };
+
+      return request(reqOpts);
+    })
+    .then((jokeResp) => {
+      var jokeData = JSON.parse(jokeResp);
+      if (jokeData.type == "success") {
+        customer.joke = jokeData.value.joke;
+      }
+      return customer;
     })
   }
 
