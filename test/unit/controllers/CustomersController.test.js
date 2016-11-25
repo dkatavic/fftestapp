@@ -95,16 +95,7 @@ describe('CustomersController', function() {
       request(sails.hooks.http.app)
         .delete(`/customer/${customerToDelete.id}`)
         .expect(204)
-        .end(function(err, data) {
-          if (err) {
-            return done(err);
-          }
-          expect(data.body.id).to.equal(customerToDelete.id);
-          expect(data.body.first_name).to.equal(customerToDelete.first_name);
-          expect(data.body.last_name).to.equal(customerToDelete.last_name);
-          expect(data.body.birth_date).to.equal(customerToDelete.birth_date);
-          done();
-        });
+        .end(done);
 
     });
 

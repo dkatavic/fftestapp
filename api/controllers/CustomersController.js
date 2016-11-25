@@ -77,7 +77,7 @@ module.exports = {
 
     CustomersService.delete(params)
     .then((customer) => {
-      return res.json(customer);
+      return res.status(204).send();
     })
     .catch((err) => {
       console.log(err);
