@@ -18,13 +18,59 @@ describe('CustomersController', function() {
     },{
       sortBy: 'last_name'
     },{
-      sortBy: 'created_at'
+      sortBy: 'birth_date'
     }];
+    var customers = [];
 
-    it('Should list all customers');
+    before(() => {
+      let birthDayFormat = sails.config.app_data.customersBirthdayFormat;
+      let promises;
+
+      for (let i = 0; i < 10; i++) {
+        let birthDay = moment(faker.date.past()).format(birthDayFormat);
+        customers.push({
+          first_name: faker.name.firstName(),
+          last_name: faker.name.lastName(),
+          birth_date: birthDay
+        });
+      }
+      
+      promises = customers.map(el => Customers.create(el));
+
+      return Promise.all(promises);
+    });
+
+    it('Should list all customers', (done) => {
+
+      request(sails.hooks.http.app)
+        .get(`/customers`)
+        .expect(200)
+        .end(function(err, data) {
+          if (err) {
+            return done(err);
+          }
+          expect(data.body.customers.length).to.equal(customers.length);
+          done();
+        });
+
+    });
 
     tests.forEach((test) => {
-      it(`Should list all customers sorted by ${test.sortBy}`);
+      it(`Should list all customers sorted by ${test.sortBy}`, (done) => {
+
+        request(sails.hooks.http.app)
+        .get(`/customers`)
+        .query({ sortBy: test })
+        .expect(200)
+        .end(function(err, data) {
+          if (err) {
+            return done(err);
+          }
+          expect(data.body.customers.length).to.equal(customers.length);
+          done();
+        });
+
+      });
     });
 
   });
