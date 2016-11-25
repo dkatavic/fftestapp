@@ -2,6 +2,7 @@
 
 var expect = require('chai').expect;
 var faker = require('faker');
+var moment = require('moment');
 
 describe('CustomersService', function() {
 
@@ -29,11 +30,19 @@ describe('CustomersService', function() {
 
   describe('create', function() {
 
-    var customerToCreate = {
-      first_name: faker.name.firstName(),
-      last_name: faker.name.lastName(),
-      birth_date: faker.date.past()
-    }
+    var customerToCreate;
+
+    before((done) => {
+      var birthDayFormat = sails.config.app_data.customersBirthdayFormat;
+      var birthDay = moment(faker.date.past()).format(birthDayFormat);
+
+      customerToCreate = {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        birth_date: birthDay
+      };
+      done();
+    });
 
     it('Should create customer', (done) => {
 
@@ -56,7 +65,44 @@ describe('CustomersService', function() {
 
   describe('edit', function() {
 
-    it('Should edit customer');
+    var customerToEdit;
+
+    before((done) => {
+      var birthDayFormat = sails.config.app_data.customersBirthdayFormat;
+      var birthDay = moment(faker.date.past()).format(birthDayFormat);
+
+      customerToEdit = {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        birth_date: birthDay
+      };
+      Customers.create(customerToEdit)
+      .then((_cust) => {
+        customerToEdit.id = _cust.id;
+        done();
+      }).catch(done);
+    });
+
+    it('Should edit customer', (done) => {
+
+      var newfirstName = faker.name.firstName();
+
+      CustomersService.edit({
+        id: customerToEdit.id,
+        newValues: {
+          first_name: newfirstName
+        }
+      })
+      .then((editedCustomer) => {
+        expect(editedCustomer.first_name).to.equal(newfirstName);
+        return Customers.findOne(customerToEdit.id); 
+      })
+      .then((customerInst) => {
+        expect(customerInst.first_name).to.equal(newfirstName);
+        done();
+      }).catch(done);
+
+    });
 
   });
 
