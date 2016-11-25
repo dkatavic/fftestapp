@@ -27,6 +27,22 @@ module.exports = {
       last_name: params.last_name,
       birth_date: params.birth_date
     });
-  } 
+  },
+
+  edit: (params) => {
+    if (!params.id) {
+      throw new Error("Missing params.id");
+    }
+    if (!params.newValues) {
+      throw new Error("Missing params.newValues");
+    }
+    if (Object.keys(params.newValues).length === 0) {
+      return Promise.reject({
+        message: "There should be at least 1 value in params.newValues"
+      });
+    }
+
+    return Customers.update({ id: params.id }, params.newValues);
+  }
 
 };

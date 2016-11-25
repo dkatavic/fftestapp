@@ -6,7 +6,7 @@ var moment = require('moment');
 
 describe('CustomersService', function() {
 
-  beforeEach(function() {
+  before(function() {
     return Customers.destroy({}).then(() => {});
   });
 
@@ -93,9 +93,9 @@ describe('CustomersService', function() {
           first_name: newfirstName
         }
       })
-      .then((editedCustomer) => {
-        expect(editedCustomer.first_name).to.equal(newfirstName);
-        return Customers.findOne(customerToEdit.id); 
+      .then((editedCustomers) => {
+        expect(editedCustomers[0].first_name).to.equal(newfirstName);
+        return Customers.findOne({ id: customerToEdit.id }); 
       })
       .then((customerInst) => {
         expect(customerInst.first_name).to.equal(newfirstName);
