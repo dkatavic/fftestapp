@@ -1,10 +1,15 @@
 // CustomersService.test.js
 
 var expect = require('chai').expect;
+var faker = require('faker');
 
 describe('CustomersService', function() {
 
-  describe('listCustomers', function() {
+  beforeEach(function() {
+    return Customers.destroy({}).then(() => {});
+  });
+
+  describe('list', function() {
 
     var tests = [{
       sortBy: 'first_name'
@@ -22,19 +27,40 @@ describe('CustomersService', function() {
 
   });
 
-  describe('createCustomer', function() {
+  describe('create', function() {
 
-    it('Should create customer');
+    var customerToCreate = {
+      first_name: faker.name.firstName(),
+      last_name: faker.name.lastName(),
+      birth_date: faker.date.past()
+    }
+
+    it('Should create customer', (done) => {
+
+      CustomersService.create(customerToCreate)
+      .then((createdCustomer) => {
+        expect(createdCustomer.first_name).to.equal(customerToCreate.first_name);
+        expect(createdCustomer.last_name).to.equal(customerToCreate.last_name);
+        expect(createdCustomer.id).to.exist;
+        return Customers.findOne(createdCustomer.id);
+      })
+      .then((customerInst) => {
+        expect(customerInst.first_name).to.equal(customerToCreate.first_name);
+        expect(customerInst.last_name).to.equal(customerToCreate.last_name);
+        done();
+      }).catch(done);
+
+    });
 
   });
 
-  describe('editCustomer', function() {
+  describe('edit', function() {
 
     it('Should edit customer');
 
   });
 
-  describe('deleteCustomer', function() {
+  describe('delete', function() {
 
     it('Should delete customer');
 
