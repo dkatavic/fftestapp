@@ -52,6 +52,12 @@ module.exports = {
       }
     };
 
+    if (!params.id) {
+      return res.status(400).json({
+        message: 'Missing id parameter'
+      });
+    }
+
     CustomersService.edit(params)
     .then((customer) => {
       return res.json(customer);
