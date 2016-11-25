@@ -41,14 +41,26 @@ module.exports = {
       });
     });
   },
-
-
-  /**
-   * `CustomersController.edit()`
-   */
+  
   edit: function (req, res) {
-    return res.json({
-      todo: 'edit() is not implemented yet!'
+    var params = {
+      id: req.params.id,
+      newValues: {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        birth_date: req.body.birth_date,
+      }
+    };
+
+    CustomersService.edit(params)
+    .then((customer) => {
+      return res.json(customer);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(err.statusCode || 400).json({
+        message: err.message
+      });
     });
   },
 

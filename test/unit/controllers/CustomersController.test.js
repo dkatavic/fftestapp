@@ -78,7 +78,43 @@ describe('CustomersController', function() {
 
   describe('PUT /customer/:id', function() {
 
-    it('Should edit customer');
+    var customerToEdit;
+
+    before((done) => {
+      var birthDayFormat = sails.config.app_data.customersBirthdayFormat;
+      var birthDay = moment(faker.date.past()).format(birthDayFormat);
+
+      customerToEdit = {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        birth_date: birthDay
+      };
+      Customers.create(customerToEdit)
+      .then((_cust) => {
+        customerToEdit.id = _cust.id;
+        done();
+      }).catch(done);
+    });
+
+    it('Should edit customer', (done) => {
+
+      var newfirstName = faker.name.firstName();
+
+      request(sails.hooks.http.app)
+        .put(`/customer/${customerToEdit.id}`)
+        .send({
+          first_name: newfirstName
+        })
+        .expect(200)
+        .end(function(err, data) {
+          if (err) {
+            return done(err);
+          }
+          expect(data.body.first_name).to.equal(newfirstName);
+          done();
+        });
+
+    });
 
   });
 

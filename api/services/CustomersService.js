@@ -32,6 +32,7 @@ module.exports = {
   },
 
   edit: (params) => {
+    var newValues = {};
     if (!params.id) {
       throw new Error("Missing params.id");
     }
@@ -43,8 +44,18 @@ module.exports = {
         message: "There should be at least 1 value in params.newValues"
       });
     }
+    
+    if (params.newValues.first_name) {
+      newValues.first_name = params.newValues.first_name;
+    }
+    if (params.newValues.last_name) {
+      newValues.last_name = params.newValues.last_name;
+    }
+    if (params.newValues.birth_date) {
+      newValues.birth_date = params.newValues.birth_date;
+    }
 
-    return Customers.update({ id: params.id }, params.newValues)
+    return Customers.update({ id: params.id }, newValues)
     .then((customers) => customers[0]);
   },
 
