@@ -44,7 +44,8 @@ module.exports = {
       });
     }
 
-    return Customers.update({ id: params.id }, params.newValues);
+    return Customers.update({ id: params.id }, params.newValues)
+    .then((customers) => customers[0]);
   },
 
   delete: (params) => {

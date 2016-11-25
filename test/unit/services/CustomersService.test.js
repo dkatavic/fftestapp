@@ -136,7 +136,7 @@ describe('CustomersService', function() {
         }
       })
       .then((editedCustomers) => {
-        expect(editedCustomers[0].first_name).to.equal(newfirstName);
+        expect(editedCustomers.first_name).to.equal(newfirstName);
         return Customers.findOne({ id: customerToEdit.id }); 
       })
       .then((customerInst) => {
