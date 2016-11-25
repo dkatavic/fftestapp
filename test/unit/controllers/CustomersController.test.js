@@ -145,7 +145,42 @@ describe('CustomersController', function() {
 
   describe('GET /customer/:id', function() {
 
-    it('Should get customer with a joke');
+    var customerToCreate;
+
+    before((done) => {
+      var birthDayFormat = sails.config.app_data.customersBirthdayFormat;
+      var birthDay = moment(faker.date.past()).format(birthDayFormat);
+
+      customerToCreate = {
+        first_name: faker.name.firstName(),
+        last_name: faker.name.lastName(),
+        birth_date: birthDay
+      };
+      Customers.create(customerToCreate)
+      .then((_cust) => {
+        customerToCreate.id = _cust.id;
+        done();
+      }).catch(done);
+    });
+
+    it('Should get customer with a joke', (done) => {
+
+      request(sails.hooks.http.app)
+        .get(`/customer/${customerToCreate.id}`)
+        .expect(200)
+        .end(function(err, data) {
+          if (err) {
+            return done(err);
+          }
+          expect(data.body.id).to.equal(customerToCreate.id);
+          expect(data.body.first_name).to.equal(customerToCreate.first_name);
+          expect(data.body.last_name).to.equal(customerToCreate.last_name);
+          expect(data.body.birth_date).to.equal(customerToCreate.birth_date);
+          expect(data.body.joke).to.be.a('String');
+          done();
+        });
+
+    });
 
   });
 
