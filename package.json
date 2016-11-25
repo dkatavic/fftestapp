@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "include-all": "^1.0.0",
+    "moment": "^2.17.0",
     "rc": "1.0.1",
     "sails": "~0.12.10",
     "sails-disk": "~0.10.9",
