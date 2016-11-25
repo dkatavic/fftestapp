@@ -6,15 +6,39 @@
  */
 
 module.exports = {
-	
-
-
-  /**
-   * `CustomersController.create()`
-   */
+  
   create: function (req, res) {
-    return res.json({
-      todo: 'create() is not implemented yet!'
+    var params = {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      birth_date: req.body.birth_date,
+    };
+
+    if (!params.first_name) {
+      return res.status(400).json({
+        message: 'Missing first_name parameter'
+      });
+    }
+    if (!params.last_name) {
+      return res.status(400).json({
+        message: 'Missing last_name parameter'
+      });
+    }
+    if (!params.birth_date) {
+      return res.status(400).json({
+        message: 'Missing birth_date parameter'
+      });
+    }
+
+    CustomersService.create(params)
+    .then((customer) => {
+      return res.status(201).json(customer);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(err.statusCode || 400).json({
+        message: err.message
+      });
     });
   },
 
